@@ -4,6 +4,7 @@ import com.durai096.QuizeApp.Model.QuestionsModel;
 import com.durai096.QuizeApp.Model.QuizModule;
 import com.durai096.QuizeApp.Repository.QuestionRepo;
 import com.durai096.QuizeApp.Repository.QuizRepo;
+import com.durai096.QuizeApp.Response.AnswerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class QuizService {
     @Autowired
     QuizRepo quizRepo;
+    @Autowired
     QuestionRepo questionRepo;
 
     public ResponseEntity<String> createQuiz(String category, int numQ, String questionTitle) {
@@ -25,7 +27,7 @@ public class QuizService {
         quiz.setQuestion_title(questionTitle);
         quiz.setQuestionsModelList(questionsModelQuiz);
         quizRepo.save(quiz);
-        return new ResponseEntity<>("success", HttpStatus.CREATED);
+        return new ResponseEntity<>("Quiz Created Successfully.....", HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<QuestWapper>> getQuizQuestion(Integer id) {
@@ -39,5 +41,22 @@ public class QuizService {
 
 
         return new ResponseEntity<>(questionsFromUser,HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> calculateQuizAnswer(Integer id, List<AnswerResponse> answerResponses) {
+
+        QuizModule quizmodule=quizRepo.findById(id).get();
+        List<QuestionsModel> questionsmodule=quizmodule.getQuestionsModelList();
+        int right=0;
+        int i=0;
+        for (AnswerResponse res: answerResponses){
+            if (res.getResponse().equals(questionsmodule.get(i).getCorrect_anwser())){
+                right++;
+                i++;
+            }
+
+
+        }
+        return new ResponseEntity<>(right,HttpStatus.OK);
     }
 }
