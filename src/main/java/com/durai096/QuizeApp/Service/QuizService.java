@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class QuizService {
@@ -49,14 +50,15 @@ public class QuizService {
         List<QuestionsModel> questionsmodule=quizmodule.getQuestionsModelList();
         int right=0;
         int i=0;
+
         for (AnswerResponse res: answerResponses){
-            if (res.getResponse().equals(questionsmodule.get(i).getCorrect_anwser())){
-                right++;
+            if (res.getResponse().equals(questionsmodule.get(i).getCorrect_anwser())) {
+                    right++;
                 i++;
             }
 
-
         }
-        return new ResponseEntity<>(right,HttpStatus.OK);
+       return new ResponseEntity<>(right,HttpStatus.OK);
+
     }
 }

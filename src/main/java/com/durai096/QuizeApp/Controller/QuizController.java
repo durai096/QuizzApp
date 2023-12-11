@@ -2,10 +2,13 @@ package com.durai096.QuizeApp.Controller;
 
 import com.durai096.QuizeApp.Model.QuestWapper;
 import com.durai096.QuizeApp.Model.QuestionsModel;
+import com.durai096.QuizeApp.Model.QuizModule;
 import com.durai096.QuizeApp.Response.AnswerResponse;
 import com.durai096.QuizeApp.Response.Message;
+import com.durai096.QuizeApp.Response.Score;
 import com.durai096.QuizeApp.Service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +35,14 @@ public class QuizController {
     }
     @PostMapping("submit/{id}")
     public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id, @RequestBody List<AnswerResponse> answerResponses){
-        Message res=new Message();
+        Score score=new Score();
+        if (id == null || answerResponses == null || answerResponses.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
 
             return quizService.calculateQuizAnswer(id,answerResponses);
     }
+
 
 }
