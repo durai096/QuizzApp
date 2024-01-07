@@ -1,9 +1,12 @@
 package com.durai096.QuizeApp.Controller;
 
+import com.durai096.QuizeApp.Model.Category;
 import com.durai096.QuizeApp.Model.QuestionsModel;
 import com.durai096.QuizeApp.Response.Message;
 import com.durai096.QuizeApp.Service.QuestionService;
-import org.apache.coyote.Response;
+import com.durai096.QuizeApp.pojo.QuestionVo;
+
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +14,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("question")
 public class QuestionController {
     @Autowired
     QuestionService questionService;
+    @GetMapping("/getCategory")
+    public List<Category> getCategories() {
+        return questionService.getAllCategories();
+    }
+
+    @GetMapping("/getAllQuestion")
+    public List<QuestionsModel> getAllQuestion(@RequestParam int categoryId) {
+
+        return questionService.getAllQuestion(categoryId);
+    }
+
     @GetMapping("allQuestions")
     public ResponseEntity<List<QuestionsModel>>  getAllQuestions(){
         Message res=new Message();
@@ -30,7 +44,7 @@ public class QuestionController {
 
     }
     @GetMapping("category/{category}")
-    public ResponseEntity<?>getByCategory(@PathVariable String category){
+        public ResponseEntity<?>getByCategory(@PathVariable String category){
         Message res=new Message();
         try {
             List<QuestionsModel> questions = questionService.getCategory(category);
@@ -51,8 +65,12 @@ public class QuestionController {
 
 
     }
-    @PostMapping("addQuestions")
-    public ResponseEntity addQuestions(@RequestBody QuestionsModel questionsModel){
+//    @GetMapping("getCategory")
+//    public List<categoryEntity> getCategory(){
+//       return questionService.getByCategory();
+//    }
+    @PostMapping("/addQuestions")
+    public ResponseEntity addQuestions(@RequestBody QuestionVo questionsModel){
         Message res=new Message();
         try {
             questionService.addQuestion(questionsModel);

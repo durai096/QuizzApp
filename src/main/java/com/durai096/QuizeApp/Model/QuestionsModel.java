@@ -9,6 +9,7 @@ import lombok.Data;
 public class QuestionsModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     int id;
     String question_title;
     String optiona;
@@ -16,5 +17,12 @@ public class QuestionsModel {
     String optionc;
     String optiond;
     String correct_anwser;
-    String category;
+    
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    
+    
+    
 }

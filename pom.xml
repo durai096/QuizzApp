@@ -8,6 +8,7 @@
 		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>war</packaging>
 	<groupId>com.durai096</groupId>
 	<artifactId>QuizeApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -25,6 +26,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+
 
 		<dependency>
 			<groupId>com.mysql</groupId>
